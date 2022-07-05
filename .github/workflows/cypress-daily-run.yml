@@ -10,13 +10,15 @@ on:
 jobs:
   nightly:
     runs-on: macos-12
-    container: cypress/browsers:node16.14.0-edge
     steps:
      - name: Checkout
        uses: actions/checkout@v2
        
      - name: Cypress nightly tests
        uses: cypress-io/github-action@v4
+       with:
+         browser: edge
+         headed: true
        
      - name: Install cypress and verify
        run: |
