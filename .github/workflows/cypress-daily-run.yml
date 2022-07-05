@@ -1,0 +1,33 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+
+name: Run cypress tests daily
+on:
+  schedule:
+    # runs cypress test daily at
+    - cron: '0 8 * * *'
+jobs:
+  nightly:
+    runs-on: macos-12
+    container: cypress/browsers:node16.14.0-edge
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+       
+     - name: Cypress nightly tests
+       uses: cypress-io/github-action@v4
+       
+     - name: Install cypress and verify
+       run: |
+         npm ci
+         $(npm bin)/cypress verify
+         
+     - name: Run Cypress tests
+       run: npm run cypress_run
+       continue-on-error: false
+       
+     - name: Copy test execution videos
+       run: |
+         mkdir public
+         cp -r cypress/videos public/videos
