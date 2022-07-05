@@ -6,7 +6,7 @@ name: Run cypress tests daily
 on:
   schedule:
     # runs cypress test daily at
-    - cron: '0 8 * * 3'
+    - cron: '*/10 * * * *'
 jobs:
   nightly:
     runs-on: macos-12
